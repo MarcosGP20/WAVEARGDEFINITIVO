@@ -42,6 +42,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 ApplicationDbContext.ConnectionString = builder.Configuration.GetConnectionString("ApplicationDbContext");
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PermitirTodo", app =>
+    {
+        app.AllowAnyOrigin()
+           .AllowAnyHeader()
+           .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -54,6 +64,10 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
+
+app.UseCors("PermitirTodo");
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
