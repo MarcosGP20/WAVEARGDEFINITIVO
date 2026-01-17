@@ -38,7 +38,7 @@ namespace WaveArg.Controllers
                 Email = request.Email,
                 Provider = "Local",
                 FechaRegistro = DateTime.UtcNow,
-                Rolid = 1
+                Rolid = request.Rolid != 0 ? request.Rolid : 1
             };
 
 

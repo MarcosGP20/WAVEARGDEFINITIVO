@@ -18,23 +18,24 @@ namespace WaveArg.Services
         }
 
         public string GenerateToken(Usuarios user)
-        {
-            var key = Encoding.UTF8.GetBytes(_config["Jwt:Key"]);
+{
+    var key = Encoding.UTF8.GetBytes(_config["Jwt:Key"]);
 
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Email, user.Email),
-            };
+    var claims = new[]
+    {
+        new Claim("id", user.Id.ToString()), // Nombre corto
+        new Claim("email", user.Email),      // Nombre corto
+        new Claim("rol", user.Rol.Nombre) 
+    };
 
-            var token = new JwtSecurityToken(
-                expires: DateTime.UtcNow.AddHours(2),
-                claims: claims,
-                signingCredentials: new SigningCredentials(
-                    new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha256));
+    var token = new JwtSecurityToken(
+        expires: DateTime.UtcNow.AddHours(2),
+        claims: claims,
+        signingCredentials: new SigningCredentials(
+            new SymmetricSecurityKey(key),
+            SecurityAlgorithms.HmacSha256));
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-    }
+    return new JwtSecurityTokenHandler().WriteToken(token);
+}
+}
 }
